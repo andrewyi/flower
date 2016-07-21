@@ -1,0 +1,11 @@
+machine:
+    python:
+        version: 3.5.0
+    services:
+        - redis
+
+test:
+    override:
+        - py.test tests:
+            environment:
+                FLASK_ENV: test
