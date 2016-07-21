@@ -15,7 +15,7 @@ class Config:
     REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
 
     SECRET_KEY = os.getenv('FLASK_SECRET_KEY',
-                           'jsr0jrzq609r431qd8x8y1hbdbiadcyg')
+                           'jsr0jrzq609r431qd8x8y1hbdbiadcy1')
 
     SESSION_TYPE = 'redis'
     SESSION_REDIS = redis.Redis.from_url(REDIS_URL)
