@@ -15,14 +15,14 @@ class Config:
     REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
 
     SECRET_KEY = os.getenv('FLASK_SECRET_KEY',
-                           'jsr30jrzq6r09r43h1qd8nx8y1hrbdbq')
+                           'jsr0jrzq609r431qd8x8y1hbdbiadcyg')
 
     SESSION_TYPE = 'redis'
     SESSION_REDIS = redis.Redis.from_url(REDIS_URL)
 
     # SESSION_PERMANENT = False
     PERMANENT_SESSION_LIFETIME = 3600 * 24 * 7
-    SESSION_KEY_PREFIX = 'session:test:'
+    SESSION_KEY_PREFIX = 'session:flower:'
 
     WTF_CSRF_TIME_LIMIT = 36000
 
