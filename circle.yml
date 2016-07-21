@@ -16,5 +16,5 @@ deployment:
         branch: master
         commands:
             - docker build -t kirklandatdocker/flower:$(git rev-parse HEAD) .
-            - docker login -u kirklandatdocker -p ${KIRKLAND_DOCKER_HUB_PASSWORD}
+            - docker login -u kirklandatdocker -p ${KIRKLAND_DOCKER_HUB_PASSWORD} --email=kirkland@yeah.net
             - docker push kirklandatdocker/flower:$(git rev-parse HEAD)
