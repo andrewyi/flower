@@ -5,8 +5,6 @@ machine:
         - docker
         - redis
 
-dependencies:
-
 test:
     override:
         - py.test tests:
