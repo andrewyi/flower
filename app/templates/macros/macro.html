@@ -1,0 +1,3 @@
+{% macro decimal(v, p=2) -%}
+    {{ ("%."~p~"f")|format(v) }}
+{%- endmacro %}
