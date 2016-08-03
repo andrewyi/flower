@@ -23,6 +23,6 @@ RUN set -x \
 
 COPY . /usr/src/app
 
-EXPOSE 5000
+EXPOSE 9000
 
-CMD ["gunicorn", "-b", ":5000", "-w", "4", "wsgi:application"]
+CMD ["gunicorn", "-b", ":9000", "-w", "4", "wsgi:application"]
