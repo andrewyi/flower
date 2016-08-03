@@ -83,3 +83,18 @@ def get_parameters():
     current_app.logger.debug('----> var1: %s.', var1)
     current_app.logger.debug('----> typeof var1: %s.', type(var1))
     return 'get'
+
+
+@tests.route('/echo')
+def do_echo():
+    q = request.args.get('q')
+    current_app.logger.debug('get q: %s.', q)
+    return q
+
+
+@tests.route('/exception')
+def raise_exp():
+    e = request.args.get('e')
+    current_app.logger.debug('get e: %s.', e)
+    raise Exception(e)
+    return ''
