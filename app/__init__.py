@@ -1,5 +1,8 @@
 import os
 import logging
+from datetime import datetime
+
+import json_log_formatter
 
 from flask import Flask
 from flask.ext.session import Session
@@ -46,16 +49,27 @@ def create_app(env):
 basedir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
 
+class JSONFormatter(json_log_formatter.JSONFormatter):
+    def json_record(self, message, extra, record):
+        extra['message'] = message
+        extra['@timestamp'] = datetime.utcnow().isoformat()[:-3] + 'Z'
+        extra['logger'] = record.name
+        extra['level'] = record.levelname
+        extra['filename'] = record.filename
+        extra['lineno'] = record.lineno
+        extra['func'] = record.funcName
+        extra['pid'] = record.process
+        extra['process'] = record.processName
+        if record.exc_info:
+            extra['exception'] = self.formatException(record.exc_info)
+        return extra
+
+    def mutate_json_record(self, json_record):
+        return json_record
+
 def init_logging(app):
-    log_path = os.path.join(basedir, 'log')
-    if not os.path.exists(log_path):
-        os.mkdir(log_path)
-
-    log_file = os.path.join(log_path, 'app.log')
-    file_handler = logging.FileHandler(log_file)
-    file_handler.setFormatter(logging.Formatter(
-        '%(asctime)s %(levelname)s [%(pathname)s:%(lineno)d]: %(message)s'))
-
-    file_handler.setLevel(app.config['LOGGING_LEVEL'])
-    app.logger.addHandler(file_handler)
+    formatter = JSONFormatter()
+    log_handler = logging.StreamHandler() 
+    log_handler.setFormatter(formatter)
+    app.logger.addHandler(log_handler)
     app.logger.setLevel(app.config['LOGGING_LEVEL'])
