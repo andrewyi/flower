@@ -27,7 +27,7 @@ def test_abort():
         code = int(code)
     except:
         code = 400
-    current_app.logger.error('gonna abort(%s).', code)
+    current_app.logger.info('gonna abort(%s).', code)
     abort(code)
 
     return 'ok'
@@ -44,26 +44,26 @@ def form_parameters():
     form = forms.ParamForm()
     form.csrf_enabled = False
     var1 = form.var1.data
-    current_app.logger.debug('----> var1: %s.', var1)
-    current_app.logger.debug('----> typeof var1: %s.', type(var1))
+    current_app.logger.info('----> var1: %s.', var1)
+    current_app.logger.info('----> typeof var1: %s.', type(var1))
 
-    current_app.logger.debug('');
+    current_app.logger.info('');
 
     var2 = form.var2.data
-    current_app.logger.debug('----> var2: %s.', var2)
-    current_app.logger.debug('----> typeof var2: %s.', type(var2))
+    current_app.logger.info('----> var2: %s.', var2)
+    current_app.logger.info('----> typeof var2: %s.', type(var2))
 
-    current_app.logger.debug('');
+    current_app.logger.info('');
 
     form = forms.ParamForm()
     var3 = form.var3.data
-    current_app.logger.debug('----> var3: %s.', var3)
-    current_app.logger.debug('----> typeof var3: %s.', type(var3))
+    current_app.logger.info('----> var3: %s.', var3)
+    current_app.logger.info('----> typeof var3: %s.', type(var3))
 
-    current_app.logger.debug('');
+    current_app.logger.info('');
     form.validate_on_submit()
-    current_app.logger.debug('from validte error: %s.', form.errors);
-    current_app.logger.debug('');
+    current_app.logger.info('from validte error: %s.', form.errors);
+    current_app.logger.info('');
 
     return 'form'
 
@@ -72,29 +72,29 @@ def form_parameters():
 @csrf.exempt
 def post_parameters():
     var1 = request.form.get('var1')
-    current_app.logger.debug('----> var1: %s.', var1)
-    current_app.logger.debug('----> typeof var1: %s.', type(var1))
+    current_app.logger.info('----> var1: %s.', var1)
+    current_app.logger.info('----> typeof var1: %s.', type(var1))
     return 'post'
 
 
 @tests.route('/get')
 def get_parameters():
     var1 = request.args.get('var1')
-    current_app.logger.debug('----> var1: %s.', var1)
-    current_app.logger.debug('----> typeof var1: %s.', type(var1))
+    current_app.logger.info('----> var1: %s.', var1)
+    current_app.logger.info('----> typeof var1: %s.', type(var1))
     return 'get'
 
 
 @tests.route('/echo')
 def do_echo():
     q = request.args.get('q')
-    current_app.logger.debug('get q: %s.', q)
+    current_app.logger.info('get q: %s.', q)
     return q
 
 
 @tests.route('/exception')
 def raise_exp():
     e = request.args.get('e')
-    current_app.logger.debug('get e: %s.', e)
+    current_app.logger.info('get e: %s.', e)
     raise Exception(e)
     return ''

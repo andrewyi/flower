@@ -10,7 +10,7 @@ class ConfigurationError(Exception):
 
 
 class Config:
-    LOGGING_LEVEL = logging.DEBUG
+    LOGGING_LEVEL = logging.INFO
 
     REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
 
@@ -34,8 +34,6 @@ class Config:
 class DevelopmentConfig(Config):
     DEBUG = True
     LOGGING_LEVEL = logging.DEBUG
-
-    SQLALCHEMY_ECHO = True
 
 
 class TestConfig(Config):
