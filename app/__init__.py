@@ -43,6 +43,9 @@ def create_app(env):
         resp.set_cookie('our-csrftoken', generate_csrf(), max_age=max_age)
         return resp
 
+    from .accessory.facilities import app_func
+    app.context_processor(app_func)
+
     return app
 
 
