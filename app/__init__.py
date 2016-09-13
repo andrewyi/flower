@@ -5,9 +5,10 @@ from datetime import datetime
 import json_log_formatter
 
 from flask import Flask
-from flask.ext.session import Session
+from flask_session import Session
 from flask_wtf.csrf import CsrfProtect
-from flask.ext.redis import FlaskRedis
+from flask_redis import FlaskRedis
+from flask_login import LoginManager
 
 import config
 
@@ -15,6 +16,7 @@ import config
 session = Session()
 csrf = CsrfProtect()
 redis = FlaskRedis()
+login_manager = LoginManager()
 
 
 def create_app(env):
@@ -29,12 +31,16 @@ def create_app(env):
     session.init_app(app)
     csrf.init_app(app)
     redis.init_app(app)
+    login_manager.init_app(app)
 
     from .main import main as blueprint_main
     app.register_blueprint(blueprint_main, url_prefix='/')
 
     from .tests import tests as blueprint_tests
     app.register_blueprint(blueprint_tests, url_prefix='/tests')
+
+    from .jsl import jsl as blueprint_jsl
+    app.register_blueprint(blueprint_jsl, url_prefix='/jsl')
 
     from flask_wtf.csrf import generate_csrf
     @app.after_request

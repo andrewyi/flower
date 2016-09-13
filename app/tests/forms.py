@@ -6,7 +6,7 @@ from flask import (
     current_app,
     )
 
-from flask.ext.wtf import Form
+from flask_wtf import Form
 from wtforms import StringField, IntegerField, DateField
 from wtforms.validators import (
         Optional,

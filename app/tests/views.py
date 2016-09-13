@@ -19,6 +19,13 @@ from . import tests
 from . import forms
 
 from .. import csrf
+from ..accessory.auth_util import check_auth
+
+
+@tests.route('/ep')
+@check_auth
+def test_endopint():
+    return request.endpoint
 
 
 @tests.route('/test_abort')
@@ -29,8 +36,15 @@ def test_abort():
         code = int(code)
     except:
         code = 400
-    current_app.logger.info('gonna abort(%s).', code)
-    abort(code)
+
+    import time
+    # time.sleep(3)
+
+    if code >= 400:
+        current_app.logger.info('gonna abort(%s).', code)
+        abort(code)
+    else:
+        return make_response('return with code', code)
 
     return 'ok'
 
@@ -44,7 +58,7 @@ def invalid_params_handler(e):
 @csrf.exempt
 def form_parameters():
     form = forms.ParamForm()
-    form.csrf_enabled = False
+    # form.csrf_enabled = False
 
     if not form.validate_on_submit():
         current_app.logger.error(
@@ -76,7 +90,8 @@ def get_parameters():
 def do_echo():
     q = request.args.get('q')
     current_app.logger.info('get q: %s.', q)
-    return q
+    # return q
+    return jsonify(echo=q)
 
 
 @tests.route('/exception')
