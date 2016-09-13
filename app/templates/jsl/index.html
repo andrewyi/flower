@@ -1,0 +1,48 @@
+<html>
+<head>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+</head>
+<body>
+    <div id="div_lvl_1">
+        <div id="div_lvl_2">
+            div 2 1
+        </div>
+        <div id="div_lvl_2_2" onclick="alert(this)">
+            div 2 2
+        </div>
+        <div id="div_lvl_2_3">
+            <!-- <a href="http://www.baidu.com" onclick="alert(this.getAttribute('href')); return false;">div 2 3</a> -->
+            <a href="javascript:alert(this)">div 2 3</a>
+            <form action="https://baidu.com">
+            <input type="button" value="woqu" />
+            <input type="submit" value="woqu2" />
+            </form>
+        </div>
+    </div>
+    <script type="text/javascript">
+        /*
+        $('#div_lvl_1').on('click',
+            function(e){
+                // alert('div lvl 1');
+                alert(e.target.id);
+            }
+        );
+
+        $('#div_lvl_2').on('click',
+            function(e){
+                // alert('div lvl 2');
+                alert('e.target.id: ' + e.target.id);
+                alert('this.id: ' + $(this).attr('id'));
+            }
+        );
+
+        $('#div_lvl_2_2').on('click',
+            tf = function(){
+                $('#div_lvl_2').trigger('click');
+                return false;
+            }
+        );
+        */
+    </script>
+</body>
+</html>

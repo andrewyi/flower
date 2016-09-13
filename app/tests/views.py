@@ -5,18 +5,27 @@ app.tests.views
 
 '''
 
+import jinja2
 from flask import (
     current_app,
     request,
     make_response,
     abort,
     jsonify,
+    render_template,
 )
 
 from . import tests
 from . import forms
 
 from .. import csrf
+from ..accessory.auth_util import check_auth
+
+
+@tests.route('/ep')
+@check_auth
+def test_endopint():
+    return request.endpoint
 
 
 @tests.route('/test_abort')
@@ -27,8 +36,15 @@ def test_abort():
         code = int(code)
     except:
         code = 400
-    current_app.logger.info('gonna abort(%s).', code)
-    abort(code)
+
+    import time
+    # time.sleep(3)
+
+    if code >= 400:
+        current_app.logger.info('gonna abort(%s).', code)
+        abort(code)
+    else:
+        return make_response('return with code', code)
 
     return 'ok'
 
@@ -42,28 +58,13 @@ def invalid_params_handler(e):
 @csrf.exempt
 def form_parameters():
     form = forms.ParamForm()
-    form.csrf_enabled = False
+    # form.csrf_enabled = False
+
+    if not form.validate_on_submit():
+        current_app.logger.error(
+                'form.validate_on_submit failed, error: %s.', form.errors)
     var1 = form.var1.data
-    current_app.logger.info('----> var1: %s.', var1)
-    current_app.logger.info('----> typeof var1: %s.', type(var1))
-
-    current_app.logger.info('');
-
-    var2 = form.var2.data
-    current_app.logger.info('----> var2: %s.', var2)
-    current_app.logger.info('----> typeof var2: %s.', type(var2))
-
-    current_app.logger.info('');
-
-    form = forms.ParamForm()
-    var3 = form.var3.data
-    current_app.logger.info('----> var3: %s.', var3)
-    current_app.logger.info('----> typeof var3: %s.', type(var3))
-
-    current_app.logger.info('');
-    form.validate_on_submit()
-    current_app.logger.info('from validte error: %s.', form.errors);
-    current_app.logger.info('');
+    current_app.logger.info('get var1: %s.', var1)
 
     return 'form'
 
@@ -89,7 +90,8 @@ def get_parameters():
 def do_echo():
     q = request.args.get('q')
     current_app.logger.info('get q: %s.', q)
-    return q
+    # return q
+    return jsonify(echo=q)
 
 
 @tests.route('/exception')
@@ -98,3 +100,24 @@ def raise_exp():
     current_app.logger.info('get e: %s.', e)
     raise Exception(e)
     return ''
+
+class T(object):
+    def __init__(self, v):
+        self.v = v
+
+@tests.route('/render')
+def render():
+    # args = {'test_key':'test_value'}
+    t = T('test args ..........')
+    return render_template('tests/index.html', args=t)
+
+@jinja2.contextfilter
+@tests.app_template_filter()
+def cvalue(context, t):
+    return ('cvalue converted input: %s' % (t.v,))
+
+@tests.app_context_processor
+def fvalue_wrapper():
+    def fvalue(t):
+        return ('fvalue converted input: %s' % (t.v,))
+    return dict(fvalue=fvalue)

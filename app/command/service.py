@@ -1,7 +1,8 @@
-from flask.ext.script import Manager
+from flask_script import Manager
 
 
 ServiceCommand = Manager(usage="service command")
+
 
 @ServiceCommand.command
 def c(echo_str):
