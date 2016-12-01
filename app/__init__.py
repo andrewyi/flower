@@ -42,6 +42,9 @@ def create_app(env):
     from .jsl import jsl as blueprint_jsl
     app.register_blueprint(blueprint_jsl, url_prefix='/jsl')
 
+    from .block_test import block_test as blueprint_block_test
+    app.register_blueprint(blueprint_block_test, url_prefix='/block_test')
+
     from flask_wtf.csrf import generate_csrf
     @app.after_request
     def set_xsrf_cookie(resp):
@@ -51,6 +54,15 @@ def create_app(env):
 
     from .accessory.facilities import app_func
     app.context_processor(app_func)
+
+
+    '''
+    @app.errorhandler(500)
+    def error_handler(error):
+        from flask import current_app
+        current_app.logger.error('----error is : %s, %s.', error, type(error))
+        return 'error_handler for 500'
+    '''
 
     return app
 

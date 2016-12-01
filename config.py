@@ -25,6 +25,7 @@ class Config:
     SESSION_KEY_PREFIX = 'session:flower:'
 
     WTF_CSRF_TIME_LIMIT = 36000
+    WTF_CSRF_METHODS = ['POST', 'PUT', 'PATCH', 'DELETE']
 
     @classmethod
     def init_app(cls, app):

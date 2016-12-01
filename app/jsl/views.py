@@ -25,3 +25,16 @@ from ..accessory.auth_util import check_auth
 @check_auth
 def test_endopint():
     return render_template('jsl/index.html')
+
+
+@jsl.route('/backspace')
+def test_backspace():
+    return render_template('jsl/backspace.html')
+
+
+@jsl.route('/filter')
+def test_filter():
+    # abort(501)
+    from ..accessory.facilities import TestException
+    raise TestException('caoni')
+    return render_template('jsl/filter.html')
