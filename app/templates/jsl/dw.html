@@ -1,0 +1,20 @@
+<html>
+<head>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+</head>
+<body>
+    <script type="text/javascript">
+        console.log('nimabi?');
+    </script>
+    <script type="text/javascript">
+         document.write("<script>console.log('caonima?');<\u002fscript>");
+        {# document.write("{{ s|safe }}"); #}
+        {# document.write("console.log('caonima?')"); #}
+        {# console.log('wocaonima'); #}
+        {# document.write("<h1>console.log('caonima?');</h1>"); #}
+    </script>
+    <script type="text/javascript">
+        console.log('wocao?');
+    </script>
+</body>
+</html>

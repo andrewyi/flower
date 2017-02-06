@@ -9,6 +9,8 @@ from flask_session import Session
 from flask_wtf.csrf import CsrfProtect
 from flask_redis import FlaskRedis
 from flask_login import LoginManager
+from flask_limiter import Limiter
+from flask_limiter.util import get_ipaddr
 
 import config
 
@@ -17,6 +19,7 @@ session = Session()
 csrf = CsrfProtect()
 redis = FlaskRedis()
 login_manager = LoginManager()
+limiter = Limiter(key_func=get_ipaddr)
 
 
 def create_app(env):
@@ -32,9 +35,10 @@ def create_app(env):
     csrf.init_app(app)
     redis.init_app(app)
     login_manager.init_app(app)
+    limiter.init_app(app)
 
     from .main import main as blueprint_main
-    app.register_blueprint(blueprint_main, url_prefix='/')
+    app.register_blueprint(blueprint_main)
 
     from .tests import tests as blueprint_tests
     app.register_blueprint(blueprint_tests, url_prefix='/tests')

@@ -15,13 +15,37 @@ from flask import (
     render_template,
     render_template_string,
     session,
+    Response,
 )
 
 from . import tests
 from . import forms
 
-from .. import csrf
+from .. import csrf, limiter
 from ..accessory.auth_util import check_auth
+
+@tests.route('/xml')
+def test_xml():
+    content = '<?xml version="1.0" ?><xml><value>heiheihei</value></xml>'
+    return Response(content, mimetype='text/xml')
+
+@tests.route('/checkbox', methods=['GET', 'POST'])
+@csrf.exempt
+def test_checkbox():
+    if request.method == 'GET':
+        return render_template_string('''
+        <head>
+        </head>
+        <body>
+            <form method="POST" action="{{ url_for('tests.test_checkbox') }}">
+            <input type="checkbox" name="checkbox_test" value="content_goes_here" checked="checked">ang</input>
+            <input type="submit" name="tijiao">
+            </form>
+        </body>
+        ''')
+    else:
+        current_app.logger.error('checkbox_test -----%s.', request.form.get('checkbox_test'))
+    return 'OK'
 
 
 @tests.route('/host')
@@ -137,9 +161,15 @@ def fieldlist():
     )
 
 
+@csrf.error_handler
+def csrf_error(reason):
+    current_app.logger.error('-----------------: %s.', reason)
+    abort(400)
+    return render_template_string('csrf_error: {{ reason }}.', reason=reason), 400
+
 
 @tests.route('/form', methods=['POST'])
-@csrf.exempt
+# @csrf.exempt
 def form_parameters():
     form = forms.ParamForm()
     # form.csrf_enabled = False
@@ -148,10 +178,11 @@ def form_parameters():
         current_app.logger.error(
                 'form.validate_on_submit failed, error: %s.', form.errors)
     var1 = form.var1.data
-    current_app.logger.info('get var1: %s.', var1)
+    current_app.logger.info('----> var1: %s.', var1)
+    current_app.logger.info('----> typeof var1: %s.', type(var1))
 
-    form.var1.data = 666666
-    current_app.logger.error('-=-=-=-=-=-=-=-=-=-= form.vat1: %s.', form.var1.data)
+    # form.var1.data = 666666
+    # current_app.logger.error('-=-=-=-=-=-=-=-=-=-= form.vat1: %s.', form.var1.data)
 
     return 'form'
 
@@ -159,7 +190,7 @@ def form_parameters():
 @tests.route('/post', methods=['POST'])
 @csrf.exempt
 def post_parameters():
-    var1 = request.form.get('var1')
+    var1 = request.form.get('var1', type=int, default=8888)
     current_app.logger.info('----> var1: %s.', var1)
     current_app.logger.info('----> typeof var1: %s.', type(var1))
     return 'post'
@@ -167,7 +198,7 @@ def post_parameters():
 
 @tests.route('/get')
 def get_parameters():
-    var1 = request.args.get('var1')
+    var1 = request.args.get('var1', type=int, default=77777)
     current_app.logger.info('----> var1: %s.', var1)
     current_app.logger.info('----> typeof var1: %s.', type(var1))
     return 'get'
@@ -230,3 +261,27 @@ from ..accessory.facilities import TestException
 def exception_handler(error):
     current_app.logger.error('----error is : %s, %s.', error, type(error))
     return 'error_handler for exception TestException'
+
+
+@tests.route('/login')
+def login():
+    current_app.logger.info('login')
+    return jsonify(code=0, message='ok', ext='login success')
+
+
+@tests.route('/work', methods=['POST'])
+@csrf.exempt
+def work():
+    number = request.form.get('number', type=int, default=0)
+    current_app.logger.info('work, number: %s.', number)
+    return jsonify(code=0, message='ok', ext='work success')
+
+
+@tests.route('/limit', methods=['GET'])
+@limiter.limit('2/60seconds')
+def limit_test():
+    return 'OK'
+
+@tests.errorhandler(429)
+def ratelimit_error_handler(e):
+    return make_response(jsonify(code=429, message='您的访问太频繁了'), 200)

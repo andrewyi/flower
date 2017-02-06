@@ -38,3 +38,18 @@ def test_filter():
     from ..accessory.facilities import TestException
     raise TestException('caoni')
     return render_template('jsl/filter.html')
+
+@jsl.route('/dw')
+def test_dw():
+    return render_template(
+            'jsl/dw.html',
+            # s='''<script>console.log('caonima?');<\/script>'''
+            s='''<script type='text/javascript' src='/jsl/sleep_script'><\/script>'''
+            )
+
+@jsl.route('/sleep_script')
+def test_script():
+    import time
+    time.sleep(3)
+    return '''console.log('caonima sleeping?')'''
+

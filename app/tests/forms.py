@@ -30,18 +30,28 @@ class ParamForm(Form):
         raise ValidationError('in validator ###')
 
     '''
+    def test_f(field):
+        current_app.logger.error(
+                'form: %s(%s), field: %s(%s), data: %s(%s).',
+                field, type(field),
+                field.data, type(field.data)
+                )
 
-    var1 = IntegerField('var1', default=7777, validators=[InputRequired(message='input required'), NumberRange(min=2, message='range min is 2')])
+
+    var1 = IntegerField('var1', default=7777, validators=[InputRequired()], filters=[])
+    # var1 = IntegerField('var1', default=7777, validators=[InputRequired(message='input required'), NumberRange(min=2, message='range min is 2')])
     # var1 = IntegerField('var1', default=7777, validators=[Optional(), NumberRange(min=2, message='range min is 2')])
 
     def validate_var1(form, field):
         current_app.logger.error('in validator ###')
         raise ValidationError('in validator ###')
 
+    '''
     var2 = BooleanField('var2')
 
     def validate_var2(form, field):
         current_app.logger.error('in validator var2 ------ %s.', field.data)
+    '''
 
 class NotifyUserForm(Form):
 
