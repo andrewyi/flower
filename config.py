@@ -13,6 +13,7 @@ class Config:
     LOGGING_LEVEL = logging.INFO
 
     REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
+    RATELIMIT_STORAGE_URL = REDIS_URL
 
     SECRET_KEY = os.getenv('FLASK_SECRET_KEY',
                            'jsr0jrzq609r431qd8x8y1hbdbiadcyg')
@@ -25,6 +26,8 @@ class Config:
     SESSION_KEY_PREFIX = 'session:flower:'
 
     WTF_CSRF_TIME_LIMIT = 36000
+    WTF_CSRF_METHODS = ['POST', 'PUT', 'PATCH', 'DELETE']
+
 
     @classmethod
     def init_app(cls, app):

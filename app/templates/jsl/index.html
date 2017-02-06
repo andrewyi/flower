@@ -1,13 +1,16 @@
 <html>
 <head>
+    <meta content="{{ csrf_token() }}" name="csrf-token">
     <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jquery.cxcalendar.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.cxcalendar.min.js') }}"></script>
 </head>
 <body>
-    <div id="div_lvl_1">
+    <div id="div_lvl_1" class="aaa bbb ccc">
         <div id="div_lvl_2">
             div 2 1
         </div>
-        <div id="div_lvl_2_2" onclick="alert(this)">
+        <div id="div_lvl_2_2" onclick="alert(this)" data-vvv="42">
             div 2 2
         </div>
         <div id="div_lvl_2_3">
@@ -20,6 +23,16 @@
         </div>
     </div>
     <script type="text/javascript">
+        var csrf_token = $('meta[name=csrf-token]').attr('content');
+        $.ajaxSetup(
+            {
+                beforeSend: function(xhr, settings) {
+                    if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrf_token);
+                    }
+                }
+            }
+        );
         /*
         $('#div_lvl_1').on('click',
             function(e){

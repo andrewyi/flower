@@ -19,6 +19,27 @@
         <div>
             {{ avalue_r(args) }}<p>
         </div>
-
+        <div>
+            <input type="text" name="" value="heiheihei" id="input_e">
+        </div>
+        <div id="out">
+            <input type="button" id="button">button</span>
+        </div>
+        <div id="out">
+            <a href="http://www.baidu.com" id="baidu">baidu</a>
+        </div>
     </body>
+    <script type="text/javascript">
+        $('#input_e').bind('change', function(e) {
+            console.log('input_e changed.');
+            e.stopPropagation();
+            return false;
+        });
+        $('#button').bind('click', function() {
+            alert('button clicked.');
+        });
+        $('#out').bind('click', function() {
+            alert('out clicked.');
+        });
+    </script>
 </html>
