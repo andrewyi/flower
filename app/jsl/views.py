@@ -20,11 +20,26 @@ from . import jsl
 from .. import csrf
 from ..accessory.auth_util import check_auth
 
+@jsl.route('/')
+@check_auth
+def gen():
+    response = make_response('ok')
+    response.set_cookie('test_cookie_name', 'test_cookie_value', path='/')
+    return response
 
 @jsl.route('/index')
 @check_auth
 def test_endopint():
-    return render_template('jsl/index.html')
+    # response = make_response(render_template('jsl/index.html'))
+    response = make_response('ok')
+    # response.set_cookie('test_cookie_name', 'test_cookie_value2', path='/')
+    return response
+    # return render_template('jsl/index.html')
+
+@jsl.route('/index/2')
+@check_auth
+def test_endopint2():
+    return 'ok' 
 
 
 @jsl.route('/backspace')

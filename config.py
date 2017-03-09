@@ -28,6 +28,8 @@ class Config:
     WTF_CSRF_TIME_LIMIT = 36000
     WTF_CSRF_METHODS = ['POST', 'PUT', 'PATCH', 'DELETE']
 
+    UPLOAD_FOLDER = './uploads'
+
 
     @classmethod
     def init_app(cls, app):

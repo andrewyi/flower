@@ -46,6 +46,9 @@ def create_app(env):
     from .jsl import jsl as blueprint_jsl
     app.register_blueprint(blueprint_jsl, url_prefix='/jsl')
 
+    from .upload import upload as blueprint_upload
+    app.register_blueprint(blueprint_upload, url_prefix='/upload')
+
     from .block_test import block_test as blueprint_block_test
     app.register_blueprint(blueprint_block_test, url_prefix='/block_test')
 
