@@ -16,7 +16,7 @@ class Config:
     RATELIMIT_STORAGE_URL = REDIS_URL
 
     SECRET_KEY = os.getenv('FLASK_SECRET_KEY',
-                           'jsr0jrzq609r431qd8x8y1hbdbiadcyg')
+                           'jsr0jrzq609r431qd8x8y1hbdbiadcy1')
 
     SESSION_TYPE = 'redis'
     SESSION_REDIS = redis.Redis.from_url(REDIS_URL)
