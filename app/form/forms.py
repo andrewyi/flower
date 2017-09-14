@@ -109,3 +109,16 @@ class InsuranceQuoteAddForm(Form):
     total_price = IntegerField('应付金额')
 
     coupon_fields = FieldList(FormField(CouponBatchForm), min_entries=0)
+
+
+class NullableTestForm(Form):
+    d = IntegerField(
+            '抵用金额',
+            validators=[
+                Optional(),
+                NumberRange(
+                    min=0,
+                    max=10 ** 7,
+                    message='抵用金额输入错误，只能为整数，且不大于10万')
+                ]
+            )

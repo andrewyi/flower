@@ -15,8 +15,8 @@ class Config:
     REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
     RATELIMIT_STORAGE_URL = REDIS_URL
 
-    SECRET_KEY = os.getenv('FLASK_SECRET_KEY',
-                           'jsr0jrzq609r431qd8x8y1hbdbiadcyg')
+    SECRET_KEY = os.getenv(
+            'FLASK_SECRET_KEY', 'jsr0jrzq609r431qd8x8y1hbdbiadcyg')
 
     SESSION_TYPE = 'redis'
     SESSION_REDIS = redis.Redis.from_url(REDIS_URL)
@@ -29,6 +29,8 @@ class Config:
     WTF_CSRF_METHODS = ['POST', 'PUT', 'PATCH', 'DELETE']
 
     UPLOAD_FOLDER = './uploads'
+
+    SERVER_NAME = 'www.local.com:5000'
 
 
     @classmethod

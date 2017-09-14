@@ -6,16 +6,14 @@ app.block_test.views
 '''
 
 import time
-import jinja2
 from flask import (
     render_template_string,
 )
 
-from . import block_test
-# from .. import csrf
+from . import html_loading_blocking_test
 
 
-@block_test.route('/index')
+@html_loading_blocking_test.route('/index')
 def test_render():
     return render_template_string(
 '''
@@ -50,7 +48,8 @@ def test_render():
 '''
             )
 
-@block_test.route('/sleeping_css')
+
+@html_loading_blocking_test.route('/sleeping_css')
 def sleeping_css():
     time.sleep(5)
     return '''
@@ -60,12 +59,13 @@ def sleeping_css():
     }
     '''
 
-@block_test.route('/sleeping_js')
+@html_loading_blocking_test.route('/sleeping_js')
 def sleeping_js():
     time.sleep(5)
     return 'alert("sleeping_js");'
 
-@block_test.route('/sleeping_css2')
+
+@html_loading_blocking_test.route('/sleeping_css2')
 def sleeping_css2():
     time.sleep(5)
     return '''
@@ -75,18 +75,12 @@ def sleeping_css2():
     }
     '''
 
-@block_test.route('/sleeping_js2')
+@html_loading_blocking_test.route('/sleeping_js2')
 def sleeping_js2():
     time.sleep(5)
 
-@block_test.route('/t')
-def t():
-    return 't'
 
-
-
-
-@block_test.route('/dw')
+@html_loading_blocking_test.route('/dw')
 def document_write():
     return render_template_string(
 '''

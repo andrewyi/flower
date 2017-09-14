@@ -5,14 +5,10 @@ app.upload.views
 
 '''
 
-# import jinja2
 from flask import (
     current_app,
     request,
-    # make_response,
     abort,
-    url_for,
-    # jsonify,
     render_template_string,
 )
 
@@ -55,38 +51,5 @@ def upload_something():
                 current_app.logger.debug(l)
 
         return 'OK'
-
-    abort(504)
-
-
-@upload.route('/post', methods=['GET', 'POST'])
-@csrf.exempt
-def post():
-
-    if request.method == 'GET':
-        return render_template_string(
-        '''
-        <!doctype html>
-        <html>
-            <head>
-                <title>Upload new File</title>
-            </head>
-            <body>
-                <h1>Upload new File</h1>
-
-                <form method="post" action="{{ url_for('upload.post') }}">
-                    <p><input type="text" name="fff">
-                    <p><input type="text" name="fff">
-                    <p><input type="text" name="fff">
-                    <input type="submit" value="suBmit">
-                </form>
-            </body>
-        </html>
-        '''
-        )
-
-    elif request.method == 'POST':
-        current_app.logger.error(request.form.getlist('fff'))
-        return ''
 
     abort(504)
