@@ -1,3 +1,7 @@
 {% macro decimal(v, p=2) -%}
     {{ ("%."~p~"f")|format(v) }}
 {%- endmacro %}
+
+{% macro backspace(v, p='s') -%}
+    {{ p ~ v ~ p }}
+{%- endmacro -%}
